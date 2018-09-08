@@ -40,6 +40,8 @@ def rankings(df, penalty):
     return 0
 
 BETA = 4.1666
+
+# Takes in 2 lists of teams: e.g. [player1, player2], [player3, player4]
 def win_probability(team1, team2):
     delta_mu = sum(r.mu for r in team1) - sum(r.mu for r in team2)
     sum_sigma = sum(r.sigma ** 2 for r in itertools.chain(team1, team2))
@@ -47,10 +49,4 @@ def win_probability(team1, team2):
     denom = math.sqrt(size * (BETA * BETA) + sum_sigma)
     trueskill = ts.global_env()
     return round(trueskill.cdf(delta_mu / denom), 2)
-
-def win_prob(series):
-    return win_probability([players_ts[series['WPlayer1']], players_ts[series['WPlayer2']], players_ts[series['WPlayer3']], \
-                     players_ts[series['WPlayer4']], players_ts[series['WPlayer5']]], \
-                    [players_ts[series['LPlayer1']], players_ts[series['LPlayer2']], players_ts[series['LPlayer3']], \
-                     players_ts[series['LPlayer4']], players_ts[series['LPlayer5']]])
 
